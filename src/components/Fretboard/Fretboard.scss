@@ -1,0 +1,60 @@
+
+.fretboard {
+  background: #6e5010;
+  height: 118px;
+  position: relative;
+}
+
+.string {
+  border-top: solid 3px #cdcfd1;
+  box-shadow: -3px 2px 2px #000;
+  margin: 20px 0;
+  cursor: pointer;
+  &:hover {
+    border-color: #fff;
+  }
+}
+
+.fret {
+  border-left: solid 3px #c6c6c6;
+  box-shadow: -3px 0px 2px  #000;
+  height: 118px;
+  position:absolute;
+}
+
+.dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: brwon;
+  display: block;
+  position:absolute;
+  left: 40px;
+  transition: all .5s;
+  cursor: pointer;
+
+
+  &:hover,
+  &.active {
+    background-color: black;
+  }
+}
+
+@each $fret in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] {
+  .fret-#{$fret} {
+    @if $fret == 1 {
+
+      left: 0;
+    } @else {
+      left: $fret*100px - 100px;
+    }
+  }
+}
+
+@each $string in [1, 2, 3, 4, 5, 6] {
+  .dot-string-#{$string} {
+    bottom: -28px + ($string * 22px);
+  }
+
+}
+
