@@ -12,7 +12,7 @@ class Fretboard extends Component {
       chords: {
         'sol': [
           {
-            string: 2,
+            string: 5,
             fret: 2
           }, {
             string: 1,
