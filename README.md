@@ -1,2 +1,3 @@
-# webpack-react
-# fretboard
+# Fretboard
+
+- Mark your chords
