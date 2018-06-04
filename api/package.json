@@ -1,0 +1,14 @@
+{
+  "name": "rappi-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.14.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mgimenez",
+  "license": "ISC"
+}
