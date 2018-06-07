@@ -3,6 +3,7 @@
   background: #6e5010;
   height: 118px;
   position: relative;
+  width: calc((70px * 14) + 5px);
 }
 
 .string {
@@ -29,7 +30,7 @@
   background-color: brwon;
   display: block;
   position:absolute;
-  left: 40px;
+  left: 24px;
   transition: all .5s;
   cursor: pointer;
 
@@ -46,7 +47,7 @@
 
       left: 0;
     } @else {
-      left: $fret*100px - 100px;
+      left: $fret*70px - 70px;
     }
   }
 }
@@ -57,4 +58,3 @@
   }
 
 }
-

@@ -2,15 +2,9 @@ import './styles.scss';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import HeaderNav from './components/HeaderNav/HeaderNav';
-import Fretboard from './components/Fretboard/Fretboard';
-import ChordsReader from './components/ChordsReader/ChordsReader';
+import App from './components/App/App';
 
 ReactDOM.render(
-  <div>
-    <HeaderNav/>
-    <Fretboard/>
-    <ChordsReader/>
-  </div>,
+  <App/>,
   document.getElementById('root')
 );

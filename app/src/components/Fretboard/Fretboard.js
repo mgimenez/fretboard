@@ -4,41 +4,30 @@ import ReactDOM from 'react-dom';
 
 class Fretboard extends Component {
 
-  constructor() {
-
-    super();
-
-    this.state = {
-      chords: {
-        'sol': [
-          {
-            string: 5,
-            fret: 2
-          }, {
-            string: 1,
-            fret: 3
-          }, {
-            string: 6,
-            fret: 3
-          }
-        ]
-      }
-    }
+  constructor(props) {
+    super(props);
   }
 
   toggleDot(e) {
     e.target.classList.toggle('active');
   }
 
+  componentWillUpdate(nextProp, nextState) {
+    this.setChord(nextProp.chord);
+  }
+
   setChord(chord) {
+    this.clearChord();
     chord.map((note) => {
       this.refs[`string-${note.string}-fret-${note.fret}`].classList.add('active');
     });
   }
 
-  componentDidMount() {
-    console.log(this.state.chords);
-    this.setChord(this.state.chords['sol'])
+  clearChord() {
+    let dots = document.querySelectorAll('.dot');
+    for (let i = 0; i < dots.length; i++) {
+      dots[i].classList.remove('active');
+    }
   }
 
   render() {
