@@ -1,3 +1,0 @@
-# Fretboard
-
-- Mark your chords
