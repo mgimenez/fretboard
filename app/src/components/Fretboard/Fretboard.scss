@@ -1,6 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto+Slab);
 .CmpFret {
   display: inline-block;
+  margin-bottom: 20px;
   .title {
     font-size: 30px;
     font-weight: bold;
@@ -14,7 +15,7 @@
     display:inline-block;
     position: relative;
     width: 170px;
-    height: 360px;
+    height: 325px;
   }
 
   .fret-wrapper {
@@ -78,7 +79,8 @@
         position: absolute;
       top: 97px;
   }
-  .input-fret {
+  .input-fret,
+  .add-capo {
     width: 20px;
     display: block;
     margin-bottom:39px;
@@ -127,4 +129,9 @@
   }
 
 
+  .fret-actions {
+    margin-top: 20px;
+    margin-left: 46px;
+  }
 }
+

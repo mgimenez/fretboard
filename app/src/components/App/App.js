@@ -14,7 +14,7 @@ const App = () => {
   // const [chord, setChord] = useState([]);
 
   useEffect(() => {
-    addFretMark(<Fretboard />);
+    addFretMark(Fretboard);
         // <Fretboard  />
   //   fetch('http://localhost:3000/chords')
   //     .then((response) => {
@@ -36,19 +36,17 @@ const App = () => {
   // }
 
   let addFretMark = (f) => {
-    setFretboardList(fl => [...fl, f]);
+    
+    console.log('add',typeof(f));
+    setFretboardList(fl => [...fl, React.createElement(f, {af: addFretMark})]);
   }
   
 
   return (
     <div className="container">
       <HeaderNav/>
-      <button className="add-fretmark" onClick={() => addFretMark(<Fretboard />)}>Add</button>
-      { 
-        fretboardList.map((f, index) => {
-          return <React.Fragment key={index}>{f}</React.Fragment>
-        })
-      }
+      <button className="add-fretmark" onClick={() => addFretMark(Fretboard)}>Add</button>
+      { fretboardList.map((fret, index) => <React.Fragment key={index}> {fret} </React.Fragment>) }
       {/* <Chords chords={this.state.chords} setChord={this.setNewChord} /> */}
       {/* <ChordsReader/> */}
     </div>
