@@ -8,8 +8,24 @@ class Fretboard extends Component {
     super(props);
   }
 
+  setCapo(fretWrapper) {
+
+    if (fretWrapper.querySelectorAll('.active').length === 6) {
+      fretWrapper.classList.add('capo');
+    } else {
+      fretWrapper.classList.remove('capo');
+    }
+    
+
+  }
+
   toggleDot(e) {
     e.target.classList.toggle('active');
+    if (e.target.parentElement.querySelectorAll('.active').length === 6) {
+      e.target.parentElement.classList.add('capo');
+    } else {
+      e.target.parentElement.classList.remove('capo');
+    }
   }
 
   componentWillUpdate(nextProp, nextState) {
@@ -17,10 +33,17 @@ class Fretboard extends Component {
   }
 
   setChord(chord) {
+    console.log(chord);
     this.clearChord();
     chord.map((note) => {
-      this.refs[`string-${note.string}-fret-${note.fret}`].classList.add('active');
+      let el = this.refs[`string-${note.string}-fret-${note.fret-1}`];
+      let fretWrapper = el.parentElement;
+      el.classList.add('active');
+      this.setCapo(fretWrapper)
     });
+    
+
+
   }
 
   clearChord() {
@@ -31,30 +54,68 @@ class Fretboard extends Component {
   }
 
   render() {
-    let frets = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        strings = [6, 5, 4, 3, 2, 1];
+    let frets = [0, 1, 2, 3, 4],
+        fretsCount = [1, 2, 3, 4],
+        strings = [1, 2, 3, 4, 5, 6],
+        stringsNames = ['E', 'A', 'D', 'G', 'B', 'E'];
+
     return (
-        <div className="fretboard">
-          {
-            frets.map((fret) => {
-              return (
-                <div className={`fret fret-${fret}`} key={fret}>
+       <div>
+          <div className="main-wrapper">
+            <div className="fret-wrapper">
+              <input type="text" className={`input-chord chord-name`}  />
+              <div className="chord-info-wrapper">
                 {
-                  strings.map((string) => {
-                    let note = {string: string, fret: fret};
-                    return <div className={`dot dot-string-${string}`} key={string} onClick={(e) => this.toggleDot(e, note)} ref={`string-${string}-fret-${fret}`}></div>
+                  stringsNames.map((string, index) => {
+                    return (
+                      <input className="input-chord chord-info" value={string} />
+                    )
                   })
                 }
-                </div>
-              )
-            })
-          }
-          {
-            strings.map((string) => {
-              return <div className="string" key={string}></div>
-            })
-          }
+              </div>
+              <div className="chord-info-wrapper">
+                {
+                  stringsNames.map((string, index) => {
+                    return (
+                      <input className="input-chord chord-info" value={index + 1} />
+                    )
+                  })
+                }
+              </div>
+              <div className="fretboard">
+                {
+                  frets.map((fret) => {
+                    return (
+                      <div className={`fret fret-${fret}`} key={fret}>
+                        {
+                          strings.map((string) => {
+                            let note = { string: string, fret: fret };
+                            return fret < 4 && <div className={`dot dot-string-${string}`} key={string} onClick={(e) => this.toggleDot(e, note)} ref={`string-${string}-fret-${fret}`}></div>
+                          })
+                        }
+                      </div>
+                    )
+                  })
+                }
+                {
+                  strings.map((string) => {
+                    return <div className="string" key={string}></div>
+                  })
+                }
+              </div>
+            </div>
+            <div className="fret-info-wrapper">
+                {
+                  fretsCount.map((fret) => {
+                    return <input className="input-fret" value={fret} />
+                  })                  
+                }
+            </div>
+
+    
+            
         </div>
+      </div>
       )
 
   }
