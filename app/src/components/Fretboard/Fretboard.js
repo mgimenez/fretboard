@@ -1,25 +1,19 @@
 import './Fretboard.scss';
-import React, { useState } from 'react';
-// import ReactDOM from 'react-dom';
+import React from 'react';
 
 const Fretboard = () => {
 
-  // let setCapo = (fretWrapper) => {
-
-  //   if (fretWrapper.querySelectorAll('.active').length === 6) {
-  //     fretWrapper.classList.add('capo');
-  //   } else {
-  //     fretWrapper.classList.remove('capo');
-  //   }
-  // }
+  let addCapo = (fretWrapper) => {
+    if (fretWrapper.querySelectorAll('.active').length === 6) {
+      fretWrapper.classList.add('capo');
+    } else {
+      fretWrapper.classList.remove('capo');
+    }
+  }
 
   let toggleDot = (e) => {
     e.target.classList.toggle('active');
-  //   if (e.target.parentElement.querySelectorAll('.active').length === 6) {
-  //     e.target.parentElement.classList.add('capo');
-  //   } else {
-  //     e.target.parentElement.classList.remove('capo');
-  //   }
+    addCapo(e.target.parentElement);
   }
 
   // componentWillUpdate(nextProp, nextState) {

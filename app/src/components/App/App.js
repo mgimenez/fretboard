@@ -1,6 +1,6 @@
 // import React, {Component} from 'react';
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import './App.scss';
 // import ReactDOM from 'react-dom';
 import HeaderNav from '../HeaderNav/HeaderNav';
 import Fretboard from '../Fretboard/Fretboard';
@@ -13,7 +13,9 @@ const App = () => {
   const [fretboardList, setFretboardList] = useState([]);
   // const [chord, setChord] = useState([]);
 
-  // useEffect(() => {
+  useEffect(() => {
+    addFretMark(<Fretboard />);
+        // <Fretboard  />
   //   fetch('http://localhost:3000/chords')
   //     .then((response) => {
   //       return response.json()
@@ -21,7 +23,7 @@ const App = () => {
   //     .then((data) => {
   //       setChords(data.results);
   //     })
-  // }, []);
+  }, []);
 
   // let setNewChord = (e, chordId) => {
   //   e.preventDefault();
@@ -34,9 +36,7 @@ const App = () => {
   // }
 
   let addFretMark = (f) => {
-    let fl = fretboardList;
-    fl.push(f);
-    setFretboardList(fl)
+    setFretboardList(fl => [...fl, f]);
   }
   
 
@@ -44,8 +44,11 @@ const App = () => {
     <div className="container">
       <HeaderNav/>
       <button className="add-fretmark" onClick={() => addFretMark(<Fretboard />)}>Add</button>
-      <Fretboard  />
-      {fretboardList}
+      { 
+        fretboardList.map((f, index) => {
+          return <React.Fragment key={index}>{f}</React.Fragment>
+        })
+      }
       {/* <Chords chords={this.state.chords} setChord={this.setNewChord} /> */}
       {/* <ChordsReader/> */}
     </div>
