@@ -1,6 +1,6 @@
 import './HeaderNav.scss';
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 
 class HeaderNav extends Component {
 
