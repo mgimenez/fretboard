@@ -1,127 +1,130 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto+Slab);
-
-.title {
-  font-size: 30px;
-  font-weight: bold;
-  font-family: "Roboto Slab";
-}
-
-.add-chord {
-  display: block;
-}
-.main-wrapper {
-  display:inline-block;
-  position: relative;
-  width: 170px;
-  height: 360px;
-}
-
-.fret-wrapper {
-  margin-left: 30px;
-}
-
-.fretboard {
-  background: #fff;
-  height: 118px;
-  position: relative;
-  transform: rotate(90deg);
-  transform-origin: left;
-  left: 75px;
-  top: -80px;
-  border-left: solid 3px;
-  width: 240px;
-}
-.input-chord {
-  -webkit-apparence: none;
-  border:solid 2px #fff;
-  position:relative;
-  left: 20px;
-  width: 111px;
-  text-align:center;
-}
-
-.chord-info-wrapper {
-  margin-left: -10px;
-}
-.chord-info {
-  width: 24px;
-  margin: 0;
-  padding: 0;
-  margin-left: -5px;
-  
-}
-.chord-name {
- font-size: 20px;
-  margin-bottom: 10px;
-  font-weight: bold;
-  display:block;
-  border-bottom:solid 1px #000;
-}
-.string {
-  border-top: solid 3px #cdcfd1;
-  margin: 20px 0;
-  cursor: pointer;
-  &:hover {
-    border-color: #000;
+.CmpFret {
+  display: inline-block;
+  .title {
+    font-size: 30px;
+    font-weight: bold;
+    font-family: "Roboto Slab";
   }
-}
 
-.fret {
-  border-left: solid 3px #c6c6c6;
-  height: 118px;
-  position:absolute;
-  &:first-child {border:none;}
-}
-.fret-info-wrapper {
-  margin-left: 10px;
-      position: absolute;
-    top: 97px;
-}
-.input-fret {
-  width: 20px;
-  display: block;
-  margin-bottom:39px;
-  text-align: center;
-  border:solid 2px #fff;
-}
-.dot {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: brwon;
-  display: block;
-  top: -8px;
-  position:absolute;
-  left: 20px;
-  transition: all .5s;
-  cursor: pointer;
+  .add-chord {
+    display: block;
+  }
+  .main-wrapper {
+    display:inline-block;
+    position: relative;
+    width: 170px;
+    height: 360px;
+  }
 
+  .fret-wrapper {
+    margin-left: 30px;
+  }
+
+  .fretboard {
+    background: #fff;
+    height: 118px;
+    position: relative;
+    transform: rotate(90deg);
+    transform-origin: left;
+    left: 75px;
+    top: -80px;
+    border-left: solid 3px;
+    width: 240px;
+  }
+  .input-chord {
+    -webkit-apparence: none;
+    border:solid 2px #fff;
+    position:relative;
+    left: 20px;
+    width: 111px;
+    text-align:center;
+  }
+
+  .chord-info-wrapper {
+    margin-left: -10px;
+  }
+  .chord-info {
+    width: 24px;
+    margin: 0;
+    padding: 0;
+    margin-left: -5px;
     
-  &:hover,
-  &.active {
-    background-color: black;
   }
-}
+  .chord-name {
+  font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    display:block;
+    border-bottom:solid 1px #000;
+  }
+  .string {
+    border-top: solid 3px #cdcfd1;
+    margin: 20px 0;
+    cursor: pointer;
+    &:hover {
+      border-color: #000;
+    }
+  }
 
-.capo .dot {
-  border-radius: 0;
-  height: 22px;
-  &:first-child {
-    border-radius: 50% 50% 0 0;
+  .fret {
+    border-left: solid 3px #c6c6c6;
+    height: 118px;
+    position:absolute;
+    &:first-child {border:none;}
   }
-  &:last-child {
-    border-radius: 0 0 50% 50%;
+  .fret-info-wrapper {
+    margin-left: 10px;
+        position: absolute;
+      top: 97px;
   }
-}
+  .input-fret {
+    width: 20px;
+    display: block;
+    margin-bottom:39px;
+    text-align: center;
+    border:solid 2px #fff;
+  }
+  .dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: brwon;
+    display: block;
+    top: -8px;
+    position:absolute;
+    left: 20px;
+    transition: all .5s;
+    cursor: pointer;
 
-@each $val in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] {
-  .fret-#{$val} {
-    left: $val*60px;
+      
+    &:hover,
+    &.active {
+      background-color: black;
+    }
   }
-  
-  .dot-string-#{$val} {
-    top: -28px + ($val * 22px);
-  }
-  
-}
 
+  .capo .dot {
+    border-radius: 0;
+    height: 22px;
+    &:first-child {
+      border-radius: 50% 50% 0 0;
+    }
+    &:last-child {
+      border-radius: 0 0 50% 50%;
+    }
+  }
+
+  @each $val in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] {
+    .fret-#{$val} {
+      left: $val*60px;
+    }
+    
+    .dot-string-#{$val} {
+      top: -28px + ($val * 22px);
+    }
+    
+  }
+
+
+}

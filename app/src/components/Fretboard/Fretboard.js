@@ -60,7 +60,7 @@ class Fretboard extends Component {
         stringsNames = ['E', 'A', 'D', 'G', 'B', 'E'];
 
     return (
-       <div>
+       <div className="CmpFret">
           <div className="main-wrapper">
             <div className="fret-wrapper">
               <input type="text" className={`input-chord chord-name`}  />

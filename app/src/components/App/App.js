@@ -12,6 +12,7 @@ class App extends Component {
 
     this.state = {
       chords: JSON.parse(localStorage.getItem('chords')) || [],
+      fretboardList: [],
       chord: []
     }
 
@@ -40,11 +41,23 @@ class App extends Component {
     })
   }
 
+  addFretMark(f) {
+    console.log(this.state.fretboardList);
+    let fl = this.state.fretboardList;
+    fl.push(f);
+    this.setState({
+      fretboardList: fl
+    })
+  }
+  
+
   render() {
     return (
       <div className="container">
         <HeaderNav/>
+        <button className="add-fretmark" onClick={() => this.addFretMark(<Fretboard/>)}>Add</button>
         <Fretboard chords={this.state.chords} chord={this.state.chord} />
+        {this.state.fretboardList}
         <Chords chords={this.state.chords} setChord={this.setChord} />
         <ChordsReader/>
       </div>
