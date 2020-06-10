@@ -29,7 +29,7 @@ class Fretboard extends Component {
   }
 
   componentWillUpdate(nextProp, nextState) {
-    this.setChord(nextProp.chord);
+    // this.setChord(nextProp.chord);
   }
 
   setChord(chord) {
@@ -47,6 +47,7 @@ class Fretboard extends Component {
   }
 
   clearChord() {
+    console.log('clear');
     let dots = document.querySelectorAll('.dot');
     for (let i = 0; i < dots.length; i++) {
       dots[i].classList.remove('active');

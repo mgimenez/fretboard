@@ -42,7 +42,7 @@ class App extends Component {
   }
 
   addFretMark(f) {
-    console.log(this.state.fretboardList);
+    // console.log(this.state.fretboardList);
     let fl = this.state.fretboardList;
     fl.push(f);
     this.setState({
@@ -55,7 +55,7 @@ class App extends Component {
     return (
       <div className="container">
         <HeaderNav/>
-        <button className="add-fretmark" onClick={() => this.addFretMark(<Fretboard/>)}>Add</button>
+        <button className="add-fretmark" onClick={() => this.addFretMark(<Fretboard chords={this.state.chords} chord={this.state.chord}/>)}>Add</button>
         <Fretboard chords={this.state.chords} chord={this.state.chord} />
         {this.state.fretboardList}
         <Chords chords={this.state.chords} setChord={this.setChord} />
