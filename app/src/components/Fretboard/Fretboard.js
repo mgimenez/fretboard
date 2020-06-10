@@ -74,6 +74,41 @@ const Fretboard = () => {
     )
   }
 
+  let fretboard = () => {
+    return (
+      <div className="fretboard">
+        {
+          frets.map((fret) => {
+            return (
+              <div className={`fret fret-${fret}`} key={fret}>
+                {
+                  strings.map((string) => {
+                    let note = { string: string, fret: fret };
+                    return fret < 4 && <div className={`dot dot-string-${string}`} key={string} onClick={(e) => toggleDot(e, note)}></div>
+                  })
+                }
+              </div>
+            )
+          })
+        }
+        {
+          strings.map((string) => {
+            return <div className="string" key={string}></div>
+          })
+        }
+      </div>
+    )
+  }
+
+  // let fretActions = () => {
+  //   return (
+  //     <div className="fret-actions">
+  //       <button>Copy</button>
+  //       <button>Remove</button>
+  //     </div>
+  //   )
+  // }
+
   return (
     <div className="CmpFret">
       <div className="main-wrapper">
@@ -81,30 +116,11 @@ const Fretboard = () => {
           <input type="text" className={`input-chord chord-name`} defaultValue="CHORD"  />
           { chordInfoWrapper('name') }
           { chordInfoWrapper('count') }
-          <div className="fretboard">
-            {
-              frets.map((fret) => {
-                return (
-                  <div className={`fret fret-${fret}`} key={fret}>
-                    {
-                      strings.map((string) => {
-                        let note = { string: string, fret: fret };
-                        return fret < 4 && <div className={`dot dot-string-${string}`} key={string} onClick={(e) => toggleDot(e, note)}></div>
-                      })
-                    }
-                  </div>
-                )
-              })
-            }
-            {
-              strings.map((string) => {
-                return <div className="string" key={string}></div>
-              })
-            }
-          </div>
+          { fretboard() }
         </div>
         {fretInfoWrapper()} 
       </div>
+      {/* {fretActions()} */}
     </div>
   )
 }
