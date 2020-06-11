@@ -5,9 +5,6 @@ import Chords from '../Chords/Chords';
 const Fretboard =  (props) => {
 
   const [chords, setChords] = useState(JSON.parse(localStorage.getItem('chords')) || []);
-
-  
-
   
   const [chordData, setChordData] = useState({
     "name": "CHORD",
@@ -36,7 +33,9 @@ const Fretboard =  (props) => {
 
     chords.map((item) => {
       if (item.id === chordId) {
-        setChordData(item)
+        // setChordData(item);
+        setChordData({ ...item, name: item.name })
+        console.log(chordData)
       }
     })
   }
@@ -132,7 +131,14 @@ const Fretboard =  (props) => {
       <div className="fret-info-wrapper">
         {
           fretsCount.map((fret, i) => {
-            return i === 0 ? <input key={i} type="number" className="input-fret" key={fret} onChange={(e) => { handleFretNumber(e, i) }} defaultValue={fret} /> : <span key={i+1} className="input-fret">{fret}</span>
+            return (
+              <div key={i}>
+                { i === 0 ? 
+                  <input type="number" className="input-fret" key={fret} onChange={(e) => { handleFretNumber(e, i) }} defaultValue={fret} /> : 
+                  <span className="input-fret">{fret}</span>
+                }
+              </div>
+            )
           })
         }
       </div> 
@@ -194,10 +200,11 @@ const Fretboard =  (props) => {
     e.target.closest('.CmpFret').remove();
   }
 
+  
   let handleChordName = (value) => {
     let localChord = chordData;
     localChord.name = value;
-    setChordData(localChord);
+    setChordData({ ...chordData, name: value })
   }
 
 
@@ -205,7 +212,7 @@ const Fretboard =  (props) => {
     <div className="CmpFret">
       <div className="main-wrapper">
         <div className="fret-wrapper">
-          <input type="text" className={`input-chord chord-name`} defaultValue={chordData.name} onChange={(e) => handleChordName(e.target.value)}  />
+          <input type="text" className={`input-chord chord-name`} value={chordData.name} onChange={(e) => handleChordName(e.target.value)}  />
           { chordInfoWrapper('name') }
           { chordInfoWrapper('count') }
           { fretboard() }
