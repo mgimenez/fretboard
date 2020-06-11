@@ -82,10 +82,17 @@
   .input-fret,
   .add-capo {
     width: 20px;
+    font-size: 13px;
     display: block;
     margin-bottom:39px;
     text-align: center;
     border:solid 2px #fff;
+  }
+
+  .note.active {
+    width: 20px;
+    height: 20px;
+    background-color: red;
   }
   .dot {
     width: 20px;
@@ -117,7 +124,7 @@
     }
   }
 
-  @each $val in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] {
+  @each $val in [0, 1, 2, 3, 4, 5, 6] {
     .fret-#{$val} {
       left: $val*60px;
     }
@@ -132,6 +139,11 @@
   .fret-actions {
     margin-top: 20px;
     margin-left: 46px;
+  }
+
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
   }
 }
 

@@ -1,16 +1,47 @@
 import './Fretboard.scss';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import Chords from '../Chords/Chords';
 
-class Fretboard extends React.Component {
+const Fretboard =  (props) => {
 
-  constructor(props) {
-    super(props);
-    this.myRef = React.createRef();
-    // const { sf } = props;
-  };
+  const [chords, setChords] = useState(JSON.parse(localStorage.getItem('chords')) || []);
 
+  
 
-  addCapo = (fretWrapper) => {
+  
+  const [chordData, setChordData] = useState({
+    "name": "CHORD",
+    "chord": []
+  });
+
+  const [fretsCount, setFretsCount] = useState([1, 2, 3, 4]);
+
+  const frets = [0, 1, 2, 3, 4],
+
+        strings = [1, 2, 3, 4, 5, 6],
+        stringsNames = ['E', 'A', 'D', 'G', 'B', 'E'];
+
+  useEffect(() => {
+    fetch('http://localhost:3000/chords')
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
+        setChords(data.results);
+      })
+  }, []);
+
+  let setNewChord = (e, chordId) => {
+    e.preventDefault();
+
+    chords.map((item) => {
+      if (item.id === chordId) {
+        setChordData(item)
+      }
+    })
+  }
+
+  let addCapo = (fretWrapper) => {
     if (fretWrapper.querySelectorAll('.active').length === 6) {
       fretWrapper.classList.add('capo');
     } else {
@@ -18,58 +49,62 @@ class Fretboard extends React.Component {
     }
   }
 
-  setCapo = (e) => {
-    let strings = e.target.parentElement.querySelectorAll('.dot');
-    strings.forEach(function(s) {
-      s.classList.add('active');
-    }) 
-    this.addCapo(e.target.parentElement);
-  }
+  let setCapo = (e, note) => {
+    let localChord = chordData;
+    strings.map(string => {
+      
+      localChord.chord.push({
+        'string': string,
+        'fret': note.fret
+      })
+    })
 
-  toggleDot = (e) => {
-    e.target.classList.toggle('active');
-    this.addCapo(e.target.parentElement);
-  }
-
-  // componentWillUpdate(nextProp, nextState) {
-  //   // this.setChord(nextProp.chord);
-  // }
-
-  // let setChord = (chord) =>{
-  //   // console.log(chord);
-  //   clearChord();
-  //   chord.map((note) => {
-  //     let el = this.refs[`string-${note.string}-fret-${note.fret-1}`];
-  //     let fretWrapper = el.parentElement;
-  //     el.classList.add('active');
-  //     this.setCapo(fretWrapper)
-  //   });
     
 
+    setChordData(localChord);
+    
+    let stringsEl = e.target.parentElement.querySelectorAll('.dot');
+    stringsEl.forEach(function(s) {
+      s.classList.add('active');
+    }) 
+    addCapo(e.target.parentElement);
 
-  // }
+    console.log(chordData)
+  }
 
-  // let clearChord = () => {
-  //   console.log('clear');
-  //   let dots = document.querySelectorAll('.dot');
-  //   for (let i = 0; i < dots.length; i++) {
-  //     dots[i].classList.remove('active');
-  //   }
-  // }
+  let toggleDot = (e, note) => {
 
-  frets = [0, 1, 2, 3, 4];
-  fretsCount = [1, 2, 3, 4];
-  strings = [1, 2, 3, 4, 5, 6];
-  stringsNames = ['E', 'A', 'D', 'G', 'B', 'E'];
+    let idx = getNoteIndexByChord(note, chordData.chord);
+    let localChord = chordData;
+    if (idx > -1) {
+      localChord.chord.splice(idx, 1);
+      e.target.classList.remove('active');
+    } else {
+      localChord.chord.push(note);
+      e.target.classList.add('active');
+    }
+    setChordData(localChord);
+    addCapo(e.target.parentElement);
 
-  chordInfoWrapper = (typeValue) => {
+    console.log(chordData)
+  }
+
+  let clearChord = () => {
+    console.log('clear');
+    setChordData({
+      "name": "CHORD",
+      "chord": []
+    })
+  }
+
+  let chordInfoWrapper = (typeValue) => {
     return (
       <div className="chord-info-wrapper">
         {
-          this.stringsNames.map((string, index) => {
+          stringsNames.map((string, index) => {
             return (
               
-              <input className="input-chord chord-info" key={index} defaultValue={ typeValue === 'name' ? string : this.stringsNames.length - index } />
+              <input className="input-chord chord-info" key={index} defaultValue={ typeValue === 'name' ? string : stringsNames.length - index } />
             )
           })
         }
@@ -77,29 +112,65 @@ class Fretboard extends React.Component {
     )
   }
 
-  fretInfoWrapper = () => {
+  let handleFretNumber = (e, i) => {
+    
+    if (i === 0) {
+      let first = parseInt(e.target.value);
+      first = first > 0 && first < 12 ? first : 1;
+      let localFretCount = [];
+
+      for (let i = first; i < first + 4; i++) {
+        localFretCount.push(i);
+      }
+      console.log(localFretCount);
+      setFretsCount(localFretCount)
+    }
+  }
+
+  let fretInfoWrapper = () => {
     return (
       <div className="fret-info-wrapper">
         {
-          this.fretsCount.map((fret) => {
-            return <input className="input-fret" key={fret} defaultValue={fret} />
+          fretsCount.map((fret, i) => {
+            return i === 0 ? <input key={i} type="number" className="input-fret" key={fret} onChange={(e) => { handleFretNumber(e, i) }} defaultValue={fret} /> : <span key={i+1} className="input-fret">{fret}</span>
           })
         }
       </div> 
     )
   }
 
-  fretboard = () => {
+  // let isNoteInChord = (note, chord) => chord.find(n => n.string === note.string && n.fret === note.fret);
+
+  let hasCapo = (chord, capo) => {
+    let count = chord.filter((n, i) => n.fret === capo).length;
+    return count === strings.length;
+  }
+
+  let getNoteIndexByChord = (note, chord) => {
+    let idx = -1;
+    chord.map((n, i) => {
+      if (n.string === note.string && n.fret === note.fret) {
+        idx = i;
+      }
+      return false
+    })
+    return idx
+  }
+
+  let fretboard = () => {
     return (
       <div className="fretboard">
         {
-          this.frets.map((fret) => {
+          frets.map((fret) => {
             return (
-              <div className={`fret fret-${fret}`} key={fret}>
+              <div className={`fret fret-${fret} ${hasCapo(chordData.chord, fret+1) ? 'capo' : ''}`} key={fret}>
                 {
-                  this.strings.map((string) => {
-                    let note = { string: string, fret: fret };
-                    return fret < 4 && <div className={`dot dot-string-${string}`} key={string} onDoubleClick={(e) => {this.setCapo(e)}} onClick={(e) => this.toggleDot(e, note)}></div>
+                  strings.map((string) => {
+                    let note = { string: string, fret: fret+1 };
+                    let isCurrent = getNoteIndexByChord(note, chordData.chord);
+                    return fret < 4 && 
+                      <div className={`dot dot-string-${string} ${isCurrent > -1 ? 'active' : ''}`} key={string} onDoubleClick={(e) => {setCapo(e, note)}} onClick={(e) => toggleDot(e, note)}>
+                      </div>
                   })
                 }
               </div>
@@ -107,7 +178,7 @@ class Fretboard extends React.Component {
           })
         }
         {
-          this.strings.map((string) => {
+          strings.map((string) => {
             return <div className="string" key={string}></div>
           })
         }
@@ -115,40 +186,39 @@ class Fretboard extends React.Component {
     )
   }
 
-  copyFret = (e) => {
-    // console.log('copyFret', e.target.closest(".CmpFret"))
-    // let a = e.target.closest(".CmpFret").innerHTML;
-    // let a = React.cloneElement(this, {});
-    let a = React.createElement(this, {});
-    console.log(this);
-    // this.props.af(a);
-    // React.cloneElement()
-    
+  let copyFret = (e) => {
+    console.log('copy')
   }
-  removeFret = (e) => {
-    console.log('removeFret')
+  let removeFret = (e) => {
+    clearChord()
     e.target.closest('.CmpFret').remove();
   }
 
-  render() {
-    return (
-      <div className="CmpFret" ref={this.myRef}>
-        <div className="main-wrapper">
-          <div className="fret-wrapper">
-            <input type="text" className={`input-chord chord-name`} defaultValue="CHORD"  />
-            { this.chordInfoWrapper('name') }
-            { this.chordInfoWrapper('count') }
-            { this.fretboard() }
-          </div>
-          {this.fretInfoWrapper()} 
-        </div>
-        <div className="fret-actions">
-          <button onClick={(e) => { this.copyFret(e) }} >Copy</button>
-          <button onClick={(e) => { this.removeFret(e) }}>Remove</button>
-        </div>
-      </div>
-    )
+  let handleChordName = (value) => {
+    let localChord = chordData;
+    localChord.name = value;
+    setChordData(localChord);
   }
+
+
+  return (
+    <div className="CmpFret">
+      <div className="main-wrapper">
+        <div className="fret-wrapper">
+          <input type="text" className={`input-chord chord-name`} defaultValue={chordData.name} onChange={(e) => handleChordName(e.target.value)}  />
+          { chordInfoWrapper('name') }
+          { chordInfoWrapper('count') }
+          { fretboard() }
+        </div>
+        {fretInfoWrapper()} 
+      </div>
+      <div className="fret-actions">
+        <button onClick={(e) => { copyFret(e) }} >Copy</button>
+        <button onClick={(e) => { removeFret(e) }}>Remove</button>
+        <Chords chords={chords} setChord={setNewChord} />
+      </div>
+    </div>
+  )
 }
 
 export default Fretboard;
