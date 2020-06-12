@@ -1,12 +1,13 @@
 import './Fretboard.scss';
 import React, { useState, useEffect } from 'react';
 import Chords from '../Chords/Chords';
+import ChordsJson from '../../chords.json';
 
 const Fretboard =  (props) => {
 
   const { copy, chordDataProp, emptyChord } = props;
   
-  const [chordsList, setChordsList] = useState(JSON.parse(localStorage.getItem('chords')) || []);
+  const [chordsList, setChordsList] = useState([]);
   const [chordData, setChordData] = useState(chordDataProp ? chordDataProp : emptyChord);
   const chordToString = (chord) => chord.map(item => `string-${item.string}-fret-${item.fret - 1}`).join(' ');
   const [fretsCount, setFretsCount] = useState([1, 2, 3, 4]);
@@ -63,15 +64,11 @@ const Fretboard =  (props) => {
     let localChord = chordData;
     if (idx > -1) {
       localChord.chord.splice(idx, 1);
-      
-      // e.target.classList.remove('active');
     } else {
       localChord.chord.push(note);
-      // e.target.classList.add('active');
     }
     setChordData(localChord);
     setChordClassName(chordToString(localChord.chord))
-    // addCapo(e.target.parentElement);
 
     console.log(chordData)
   }
