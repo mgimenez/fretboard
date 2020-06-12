@@ -1,7 +1,6 @@
 import './Fretboard.scss';
 import React, { useState, useEffect } from 'react';
 import Chords from '../Chords/Chords';
-import ChordsJson from '../../chords.json';
 
 const Fretboard =  (props) => {
 
