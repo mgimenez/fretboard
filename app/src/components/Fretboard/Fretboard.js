@@ -7,7 +7,7 @@ const Fretboard =  (props) => {
   const { copy, chordDataProp, emptyChord } = props;
 
   const [chordsList, setChordsList] = useState(JSON.parse(localStorage.getItem('chords')) || []);
-  const [chordData, setChordData] = useState(emptyChord);
+  const [chordData, setChordData] = useState(chordDataProp ? chordDataProp : emptyChord);
   const [fretsCount, setFretsCount] = useState([1, 2, 3, 4]);
   
   const frets = [0, 1, 2, 3, 4];
@@ -23,8 +23,6 @@ const Fretboard =  (props) => {
         setChordsList(data.results);
       })
 
-    setChordData(chordDataProp ? chordDataProp : chordData);
-    console.log('chordData', chordData, 'chordDataProp', chordDataProp);
   }, [chordData, chordDataProp]);
 
   let setNewChord = (e, chordId) => {
@@ -58,8 +56,6 @@ const Fretboard =  (props) => {
       return false
     })
 
-    
-
     setChordData(localChord);
     
     let stringsEl = e.target.parentElement.querySelectorAll('.dot');
@@ -92,9 +88,6 @@ const Fretboard =  (props) => {
     console.log('clear');
     setChordData(emptyChord)
     console.log(chordData)
-
-
-    
   }
 
   let chordInfoWrapper = (typeValue) => {
