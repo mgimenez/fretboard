@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.scss';
 import HeaderNav from '../HeaderNav/HeaderNav';
 import Fretboard from '../Fretboard/Fretboard';
@@ -7,34 +7,28 @@ import Fretboard from '../Fretboard/Fretboard';
 
 const App = () => {
 
-  const [fretboardList, setFretboardList] = useState([]);
-  const [chordd, setChordd] = useState({
+  const emptyChord = {
     "name": "CHORD",
     "chord": []
-  });
+  };
 
-  useEffect(() => {
-    setFretboardList(fl => [...fl, <Fretboard af={addFretMark} copy={copyChord} chordd={chordd}/>]);
-  }, []);
+  const copyChord = (data) => {
+    console.log(data);
+    addFretMark(<Fretboard copy={copyChord} chordDataProp={data} />)
+  }
 
-  let addFretMark = (f) => {
+  const [fretboardList, setFretboardList] = useState([<Fretboard copy={copyChord} chordDataProp={emptyChord} />]);
+
+  const addFretMark = (f) => {
     console.log('add f', f)
     setFretboardList(fl => [...fl, f]);
   }
 
-  let copyChord = (data) => {
-    console.log(data);
-    // setChordd(data);
-    addFretMark(<Fretboard af={addFretMark} copy={copyChord} chordd={data} />)
-  }
-  
-
   return (
     <div className="container">
       <HeaderNav/>
-      <button className="add-fretmark" onClick={() => addFretMark(<Fretboard af={addFretMark} copy={copyChord} chordd={chordd} />)}>Add</button>
+      <button className="add-fretmark" onClick={() => addFretMark(<Fretboard copy={copyChord} chordDataProp={emptyChord} />)}>Add</button>
       { fretboardList.map((fret, index) => <React.Fragment key={index}> {fret} </React.Fragment>) }
-      {/* <ChordsReader/> */}
     </div>
   )
 }

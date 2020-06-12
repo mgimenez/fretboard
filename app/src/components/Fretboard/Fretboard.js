@@ -4,7 +4,7 @@ import Chords from '../Chords/Chords';
 
 const Fretboard =  (props) => {
 
-  const { copy, chordd } = props;
+  const { copy, chordDataProp } = props;
 
   const [chords, setChords] = useState(JSON.parse(localStorage.getItem('chords')) || []);
   
@@ -29,11 +29,10 @@ const Fretboard =  (props) => {
         setChords(data.results);
       })
 
-    // setChordData(chordd)
-    setChordData(chordd)
+    setChordData(chordDataProp)
     console.log(chordData)
-    console.log('chordd',chordd);
-  }, []);
+    console.log('chordDataProp', chordDataProp);
+  }, [chordData, chordDataProp]);
 
   let setNewChord = (e, chordId) => {
     e.preventDefault();
@@ -43,6 +42,7 @@ const Fretboard =  (props) => {
         setChordData({ ...item, name: item.name })
         console.log(chordData)
       }
+      return false
     })
   }
 
@@ -62,6 +62,7 @@ const Fretboard =  (props) => {
         'string': string,
         'fret': note.fret
       })
+      return false
     })
 
     
