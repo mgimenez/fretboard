@@ -14,10 +14,10 @@ const App = () => {
 
   const copyChord = (data) => {
     console.log(data);
-    addFretMark(<Fretboard copy={copyChord} chordDataProp={data} />)
+    addFretMark(<Fretboard copy={copyChord} chordDataProp={data} emptyChord={emptyChord} />)
   }
 
-  const [fretboardList, setFretboardList] = useState([<Fretboard copy={copyChord} chordDataProp={emptyChord} />]);
+  const [fretboardList, setFretboardList] = useState([<Fretboard copy={copyChord} emptyChord={emptyChord} />]);
 
   const addFretMark = (f) => {
     console.log('add f', f)
@@ -27,7 +27,7 @@ const App = () => {
   return (
     <div className="container">
       <HeaderNav/>
-      <button className="add-fretmark" onClick={() => addFretMark(<Fretboard copy={copyChord} chordDataProp={emptyChord} />)}>Add</button>
+      <button className="add-fretmark" onClick={() => addFretMark(<Fretboard copy={copyChord} emptyChord={emptyChord} />)}>Add</button>
       { fretboardList.map((fret, index) => <React.Fragment key={index}> {fret} </React.Fragment>) }
     </div>
   )

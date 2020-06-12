@@ -7,7 +7,7 @@ class Chords extends Component {
       return (
         <div className="chords-list">
           {
-            this.props.chords.map((item) => {
+            this.props.chordsList.map((item) => {
 
               return <a className="chord" href="http://" key={item.id} onClick={(e) => this.props.setChord(e, item.id)}>{item.name}</a>
             })

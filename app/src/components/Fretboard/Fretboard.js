@@ -4,21 +4,15 @@ import Chords from '../Chords/Chords';
 
 const Fretboard =  (props) => {
 
-  const { copy, chordDataProp } = props;
+  const { copy, chordDataProp, emptyChord } = props;
 
-  const [chords, setChords] = useState(JSON.parse(localStorage.getItem('chords')) || []);
-  
-  const [chordData, setChordData] = useState({
-    "name": "CHORD",
-    "chord": []
-  });
-
+  const [chordsList, setChordsList] = useState(JSON.parse(localStorage.getItem('chords')) || []);
+  const [chordData, setChordData] = useState(emptyChord);
   const [fretsCount, setFretsCount] = useState([1, 2, 3, 4]);
-
-  const frets = [0, 1, 2, 3, 4],
-
-        strings = [1, 2, 3, 4, 5, 6],
-        stringsNames = ['E', 'A', 'D', 'G', 'B', 'E'];
+  
+  const frets = [0, 1, 2, 3, 4];
+  const strings = [1, 2, 3, 4, 5, 6];
+  const stringsNames = ['E', 'A', 'D', 'G', 'B', 'E'];
 
   useEffect(() => {
     fetch('http://localhost:3000/chords')
@@ -26,18 +20,17 @@ const Fretboard =  (props) => {
         return response.json()
       })
       .then((data) => {
-        setChords(data.results);
+        setChordsList(data.results);
       })
 
-    setChordData(chordDataProp)
-    console.log(chordData)
-    console.log('chordDataProp', chordDataProp);
+    setChordData(chordDataProp ? chordDataProp : chordData);
+    console.log('chordData', chordData, 'chordDataProp', chordDataProp);
   }, [chordData, chordDataProp]);
 
   let setNewChord = (e, chordId) => {
     e.preventDefault();
 
-    chords.map((item) => {
+    chordsList.map((item) => {
       if (item.id === chordId) {
         setChordData({ ...item, name: item.name })
         console.log(chordData)
@@ -97,12 +90,8 @@ const Fretboard =  (props) => {
 
   let clearChord = () => {
     console.log('clear');
-    setChordData({
-      "name": "CHORD",
-      "chord": []
-    })
-
-    console.log(this)
+    setChordData(emptyChord)
+    console.log(chordData)
 
 
     
@@ -237,7 +226,7 @@ const Fretboard =  (props) => {
       <div className="fret-actions">
         <button onClick={(e) => { copyFret(e) }} >Copy</button>
         <button onClick={(e) => { removeFret(e) }}>Remove</button>
-        <Chords chords={chords} setChord={setNewChord} />
+        <Chords chordsList={chordsList} setChord={setNewChord} />
       </div>
     </div>
   )
