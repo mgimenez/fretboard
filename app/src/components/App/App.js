@@ -8,21 +8,31 @@ import Fretboard from '../Fretboard/Fretboard';
 const App = () => {
 
   const [fretboardList, setFretboardList] = useState([]);
+  const [chordd, setChordd] = useState({
+    "name": "CHORD",
+    "chord": []
+  });
 
   useEffect(() => {
-    setFretboardList(fl => [...fl, <Fretboard af={addFretMark}/>]);
+    setFretboardList(fl => [...fl, <Fretboard af={addFretMark} copy={copyChord} chordd={chordd}/>]);
   }, []);
 
   let addFretMark = (f) => {
     console.log('add f', f)
     setFretboardList(fl => [...fl, f]);
   }
+
+  let copyChord = (data) => {
+    console.log(data);
+    // setChordd(data);
+    addFretMark(<Fretboard af={addFretMark} copy={copyChord} chordd={data} />)
+  }
   
 
   return (
     <div className="container">
       <HeaderNav/>
-      <button className="add-fretmark" onClick={() => addFretMark(<Fretboard af={addFretMark} />)}>Add</button>
+      <button className="add-fretmark" onClick={() => addFretMark(<Fretboard af={addFretMark} copy={copyChord} chordd={chordd} />)}>Add</button>
       { fretboardList.map((fret, index) => <React.Fragment key={index}> {fret} </React.Fragment>) }
       {/* <ChordsReader/> */}
     </div>
