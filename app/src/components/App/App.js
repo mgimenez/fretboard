@@ -13,14 +13,14 @@ const App = () => {
   };
 
   const copyChord = (data) => {
-    console.log(data);
+    console.log('copyChord', data);
     addFretMark(<Fretboard copy={copyChord} chordDataProp={data} emptyChord={emptyChord} />)
   }
 
   const [fretboardList, setFretboardList] = useState([<Fretboard copy={copyChord} emptyChord={emptyChord} />]);
 
   const addFretMark = (f) => {
-    console.log('add f', f)
+    // console.log('add f', f)
     setFretboardList(fl => [...fl, f]);
   }
 

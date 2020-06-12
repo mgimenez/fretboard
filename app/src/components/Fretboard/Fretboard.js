@@ -1,6 +1,8 @@
 import './Fretboard.scss';
 import React, { useState, useEffect } from 'react';
 import Chords from '../Chords/Chords';
+import ChordsData from '../../chords.json';
+
 
 const Fretboard =  (props) => {
 
@@ -16,15 +18,12 @@ const Fretboard =  (props) => {
   const strings = [1, 2, 3, 4, 5, 6];
   const stringsNames = ['E', 'A', 'D', 'G', 'B', 'E'];
 
-  useEffect(() => {
-    fetch('http://localhost:3000/chords')
-      .then((response) => {
-        return response.json()
-      })
-      .then((data) => {
-        setChordsList(data.results);
-      })
+  sessionStorage.setItem('chordsData', JSON.stringify(ChordsData));
 
+  useEffect(() => {
+    let chordsDataJson = JSON.parse(sessionStorage.getItem('chordsData'))
+    setChordsList(chordsDataJson.results);
+    
   }, [chordData, chordDataProp]);
 
   let setNewChord = (e, chordId) => {
@@ -74,7 +73,13 @@ const Fretboard =  (props) => {
 
   let clearChord = () => {
     console.log('clear');
-    setChordData(emptyChord)
+    // let localChord = chordData;
+    // setChordData(emptyChord)
+    setChordData({
+      "name": "CHORD",
+      "chord": []
+    })
+    setChordClassName('')
     console.log(chordData)
   }
 
@@ -174,6 +179,7 @@ const Fretboard =  (props) => {
   }
 
   let copyFret = (e) => {
+    console.log('chordData FB', chordData)
     copy(chordData)
 
   }
@@ -202,8 +208,9 @@ const Fretboard =  (props) => {
         {fretInfoWrapper()} 
       </div>
       <div className="fret-actions">
-        <button onClick={(e) => { copyFret(e) }} >Copy</button>
-        <button onClick={(e) => { removeFret(e) }}>Remove</button>
+        <button className="btn-copy btn" onClick={(e) => { copyFret(e) }} >Copy</button>
+        <button className="btn-remove btn" onClick={(e) => { removeFret(e) }}>Remove</button>
+        <button className="btn-clear btn" onClick={(e) => { clearChord(e) }}>Clear</button>
         <Chords chordsList={chordsList} setChord={setNewChord} />
       </div>
     </div>
