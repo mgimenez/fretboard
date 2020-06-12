@@ -113,17 +113,6 @@
     }
   }
 
-  .capo .dot {
-    border-radius: 0;
-    height: 22px;
-    &:first-child {
-      border-radius: 50% 50% 0 0;
-    }
-    &:last-child {
-      border-radius: 0 0 50% 50%;
-    }
-  }
-
   @each $val in [0, 1, 2, 3, 4, 5, 6] {
     .fret-#{$val} {
       left: $val*60px;
@@ -144,6 +133,32 @@
   input[type=number]::-webkit-inner-spin-button,
   input[type=number]::-webkit-outer-spin-button {
       -webkit-appearance: none;
+  }
+
+  @each $st in [1, 2, 3, 4, 5, 6] {
+    @each $ft in [0, 1, 2, 3, 4] {
+      .string-#{$st}-fret-#{$ft} {
+        .fret-#{$ft} {
+          .dot-string-#{$st} {
+            width: 20px;
+            height: 20px;
+            background-color: #000;
+          }
+        }
+      }
+    }
+    
+  }
+
+  .capo .dot {
+    border-radius: 0;
+    height: 22px!important;
+    &:first-child {
+      border-radius: 50% 50% 0 0;
+    }
+    &:last-child {
+      border-radius: 0 0 50% 50%;
+    }
   }
 }
 

@@ -5,10 +5,12 @@ import Chords from '../Chords/Chords';
 const Fretboard =  (props) => {
 
   const { copy, chordDataProp, emptyChord } = props;
-
+  
   const [chordsList, setChordsList] = useState(JSON.parse(localStorage.getItem('chords')) || []);
   const [chordData, setChordData] = useState(chordDataProp ? chordDataProp : emptyChord);
+  const chordToString = (chord) => chord.map(item => `string-${item.string}-fret-${item.fret - 1}`).join(' ');
   const [fretsCount, setFretsCount] = useState([1, 2, 3, 4]);
+  const [chordClassName, setChordClassName] = useState(chordToString(chordData.chord));
   
   const frets = [0, 1, 2, 3, 4];
   const strings = [1, 2, 3, 4, 5, 6];
@@ -31,18 +33,11 @@ const Fretboard =  (props) => {
     chordsList.map((item) => {
       if (item.id === chordId) {
         setChordData({ ...item, name: item.name })
+        setChordClassName(chordToString(item.chord))
         console.log(chordData)
       }
       return false
     })
-  }
-
-  let addCapo = (fretWrapper) => {
-    if (fretWrapper.querySelectorAll('.active').length === 6) {
-      fretWrapper.classList.add('capo');
-    } else {
-      fretWrapper.classList.remove('capo');
-    }
   }
 
   let setCapo = (e, note) => {
@@ -57,12 +52,7 @@ const Fretboard =  (props) => {
     })
 
     setChordData(localChord);
-    
-    let stringsEl = e.target.parentElement.querySelectorAll('.dot');
-    stringsEl.forEach(function(s) {
-      s.classList.add('active');
-    }) 
-    addCapo(e.target.parentElement);
+    setChordClassName(chordToString(localChord.chord))
 
     console.log(chordData)
   }
@@ -73,13 +63,15 @@ const Fretboard =  (props) => {
     let localChord = chordData;
     if (idx > -1) {
       localChord.chord.splice(idx, 1);
-      e.target.classList.remove('active');
+      
+      // e.target.classList.remove('active');
     } else {
       localChord.chord.push(note);
-      e.target.classList.add('active');
+      // e.target.classList.add('active');
     }
     setChordData(localChord);
-    addCapo(e.target.parentElement);
+    setChordClassName(chordToString(localChord.chord))
+    // addCapo(e.target.parentElement);
 
     console.log(chordData)
   }
@@ -159,7 +151,7 @@ const Fretboard =  (props) => {
 
   let fretboard = () => {
     return (
-      <div className="fretboard">
+      <div className={`fretboard ${chordClassName}`}>
         {
           frets.map((fret) => {
             return (
@@ -167,9 +159,8 @@ const Fretboard =  (props) => {
                 {
                   strings.map((string) => {
                     let note = { string: string, fret: fret+1 };
-                    let isCurrent = getNoteIndexByChord(note, chordData.chord);
                     return fret < 4 && 
-                      <div className={`dot dot-string-${string} ${isCurrent > -1 ? 'active' : ''}`} key={string} onDoubleClick={(e) => {setCapo(e, note)}} onClick={(e) => toggleDot(e, note)}>
+                      <div className={`dot dot-string-${string}`} key={string} onDoubleClick={(e) => {setCapo(e, note)}} onClick={(e) => toggleDot(e, note)}>
                       </div>
                   })
                 }
@@ -187,8 +178,6 @@ const Fretboard =  (props) => {
   }
 
   let copyFret = (e) => {
-    // console.log('copy', chordData)
-
     copy(chordData)
 
   }
